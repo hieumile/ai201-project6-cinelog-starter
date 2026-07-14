@@ -14,6 +14,11 @@ class FilmNotFoundError(Exception):
     pass
 
 
+class AlreadyInWatchlistError(Exception):
+    """Raised when a film is already in the user's watchlist."""
+    pass
+
+
 def add_to_watchlist(user_id, film_id):
     """
     Add a film to a user's watchlist (i.e., mark it to watch later).
@@ -27,10 +32,19 @@ def add_to_watchlist(user_id, film_id):
 
     Raises:
         FilmNotFoundError: If film_id does not exist.
+        AlreadyInWatchlistError: If the film is already in the user's watchlist.
     """
     film = Film.query.get(film_id)
     if film is None:
         raise FilmNotFoundError(f"No film found with id '{film_id}'")
+
+    existing = WatchlistEntry.query.filter_by(
+        user_id=user_id, film_id=film_id
+    ).first()
+    if existing:
+        raise AlreadyInWatchlistError(
+            f"Film '{film_id}' is already in this user's watchlist"
+        )
 
     entry = WatchlistEntry(user_id=user_id, film_id=film_id)
     db.session.add(entry)
