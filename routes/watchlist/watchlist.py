@@ -6,7 +6,7 @@ Endpoints for a user's watchlist (films they want to watch later).
 
 from flask import Blueprint, jsonify, request
 from services.watchlist_service import (
-    save_to_watchlist,
+    add_to_watchlist,
     get_watchlist,
     FilmNotFoundError,
 )
@@ -36,5 +36,5 @@ def add_film(user_id):
     if not data or "film_id" not in data:
         return jsonify({"error": "film_id is required"}), 400
 
-    entry = save_to_watchlist(user_id=user_id, film_id=data["film_id"])
+    entry = add_to_watchlist(user_id=user_id, film_id=data["film_id"])
     return jsonify(entry.to_dict()), 201

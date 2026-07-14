@@ -14,9 +14,9 @@ class FilmNotFoundError(Exception):
     pass
 
 
-def save_to_watchlist(user_id, film_id):
+def add_to_watchlist(user_id, film_id):
     """
-    Save a film to a user's watchlist (i.e., mark it to watch later).
+    Add a film to a user's watchlist (i.e., mark it to watch later).
 
     Args:
         user_id (str): ID of the user.
